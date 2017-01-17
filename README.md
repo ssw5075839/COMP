@@ -40,4 +40,12 @@ Here, I will present a highly simplified introduction to the compressed sampling
 ##Compressed Sensing in Sigma Delta Analog to Digital Converter (ADC)
 We have covered all the mathematical fundamentals to understand compressed sensing. We know that when A obeys RIP, compressed sensing is feasible and the reconstruction algorithm is available either through BP or BPDN problem. Now, let us take a look on how to integrate this process into Sigma Delta ADC.
 
-The basic concepts of sigma delta ADC and Z domain transformation can be found in this book [Analog Integrated Circuit Design](https://www.amazon.com/Analog-Integrated-Circuit-Design-David/dp/0471144487/).
+The basic concepts of sigma delta ADC and Z domain transformation can be found in this book [Analog Integrated Circuit Design](https://www.amazon.com/Analog-Integrated-Circuit-Design-David/dp/0471144487/). Now let us use Z domain model to explain how this works.
+
+Below is an traditional sigma delta ADC:<p align="center"><img src="https://github.com/ssw5075839/COMP/blob/master/pics/ordinary_sd.PNG"></p>X(z) stands for input signal, Y(z) stands for ADC output, Res(z) stands for the residual value after the first subtractor, E(z) stands for the quantization noise introduced by the single bit quantizer and Int(z) stands for integrator output. Note that one unit delay in time domain is equal to multiply by 1/z in Z domain.
+
+From this graph we can get three equations:<p align="center"><img src="http://www.sciweavers.org/upload/Tex2Img_1484681906/render.png" align="center" border="0" alt="\begin{cases}Y(z)=Int(z)+E(z)\\Int(z)=Res(z)+Int(z) Z^{-1}\\Res(z)=X(z)-Y(z) Z^{-1}\end{cases} " width="240" height="81" /></p>
+
+It is not hard to solve it and get<p align="center"><img src="http://www.sciweavers.org/upload/Tex2Img_1484682003/render.png" align="center" border="0" alt="Y(z)=X(z)+(1- \frac{1}{z} )E(z)" width="210" height="43" /></p>
+
+Here we get the behaviour of the traditional sigma delta ADC: since z goes to 1 when frequency goes to 0, Y(z) is approximately eqaul to input data X(z), namely, convert analog input signal X(z) to digital signal Y(z). This is achieved by adding shapped quantization noise <img src="http://www.sciweavers.org/upload/Tex2Img_1484682304/render.png" align="center" border="0" alt="(1- \frac{1}{z} )E(z)" width="97" height="43" />. When z goes to 1 the noise goes to 0. Hence, we eliminate quantization noise around DC (frequency around 0).
