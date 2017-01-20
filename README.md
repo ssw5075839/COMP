@@ -43,5 +43,27 @@ Then run the function with command SD_COMP_DEMO(opts) (or simply SD_COMP_DEMO() 
 
 ##Explanation of Parameters in Program
 The available option fields and its suggested values are:
-1. 
+1. 'PATHS'
+2. 'DATA_LENGTH'
+3. 'WARMUP_CYCLES'
+4. 'SCALE'
+5. 'BITS'
+6. 'FS'
+7. 'FILENAME'
+8. 'SAVE'
+9. 'LOAD'
+10. 'binFFT'
+11. 'amp'
+12. 'alg_choice'
+13. 'bp_verbosity'
+14. 'bp_iterations'
+15. 'bp_nPrevVals'
+16. 'bp_bpTol'
+17. 'bp_optTol'
+18. 'bp_decTol'
+19. 'bp_stepMin'
+20. 'bp_stepMax'
+21. 'bp_subspaceMin'
+22. 'OMP_residual'
+23. 'CoSaMP_estimate_sparsity'
 ##Results and Discussion
