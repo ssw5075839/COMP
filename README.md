@@ -37,33 +37,77 @@ In this matlab demo of compressed sensing sigma delta ADC, we will implment a on
 
 To run the code, first define a MATLAB structure opts. (This step is optional. If you don't define opts, the code will use all the default settings.)
 
-To define a struct, use command opts = struct('field1',value1,...,'fieldN',valueN). Each option comes with a ('field', value) pair. The available filed name and suggested value will be discussed in the next section.
+To define a struct, use command **opts = struct('field1',value1,...,'fieldN',valueN)**. Each option comes with a ('field', value) pair. The available filed name and suggested value will be discussed in the next section. If you don't define some name field, the default setting of that option will be used.
 
-Then run the function with command SD_COMP_DEMO(opts) (or simply SD_COMP_DEMO() if you prefer to use default settings). The demo will output the reconstruction algorithm running status in the console and the oupt three graphs to compare the original signal agains reconstructed signal in detail, both in time domain and frequency domain.
+Then run the function with command **SD_COMP_DEMO(opts)** (or simply **SD_COMP_DEMO()**l if you prefer to use default settings). The demo will output the reconstruction algorithm running status in the console and the oupt three graphs to compare the original signal agains reconstructed signal in detail, both in time domain and frequency domain.
 
 ##Explanation of Parameters in Program
 The available option fields and its suggested values are:
+
 1. 'PATHS'
+This is the setting for how many ADCs to use for compressed sensing. It is equal to the 'm' we mentioend above and in the theoretical background. Default is 15 which is suitable for recovering 2 to 3 sparse signals.
+
 2. 'DATA_LENGTH'
+This is the setting for how many sampling points to use for the time domain signal. The larger it is, the more details the signal is recorded in. It is equal to the 'n' we mentioend above and in the theoretical background. Default is 256.
+
 3. 'WARMUP_CYCLES'
+How many warm up cycles for ADC before it starts compressed sensing job. This is used to eleminate the starting value effect of ADC. Default is 10.
+
 4. 'SCALE'
+Global scale factor for the input signal. Default is 1. Since here we only demostrate 1 bit quantizer ADC, there is not too much effect.
+
 5. 'BITS'
-6. 'FS'
+How many bits of quantizer for ADC. Here we only demonstrate 1 bit quantizer ADC so default is 1. It will have not too much effect untill in the future development multi-bit quantizer is used.
+
 7. 'FILENAME'
+The file name in which you want to save or load the random matrix PHI. This file name works for either save and load mode.
+
 8. 'SAVE'
+Indicate you want to save the random matrix PHI in 'FILENAME'.
+
 9. 'LOAD'
+Indicate you want to load the random matrix PHI from file in 'FILENAME'. This is used to recover previous running results.
+
 10. 'binFFT'
+MATLAB vector at which frequency the sparse signals are. Note this is relative to the sampling frequency. For example, default binFFT is [3 51] and default DATA_LENGTH is 256. So actually the two sine signals at frequency of 3\*1/256 and 51\*1/256 are superpositioned as the input signal X(t). The length of binFFT is the sparsity of input signal. It is eqault to the 'S' we mentioend above and in the theoretical background. Note that in addition to satisfaction of inequality <img src="http://latex.codecogs.com/svg.latex?m\geq%20C\times%20S\log%20n" border="0" align="center"/>, different signal's frequency are recommended to be far away from each other. For example, [3 51 97] has much higher probability to be recovered than [3 4 5]. Note that due to [nyquist sampling theorem](https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem), the maximum elment of 'binFFT' cannot exceeds DATA_LENGHT/2.
+
 11. 'amp'
+The amplitude which each signal of binFFT is at. Default is [0.8 0.3] for binFFT of [3 51]. It should has the same length of binFFT.
+
 12. 'alg_choice'
+Must be either 1 or 2 or 3. Default is 1 and SPGL1 will be used. 2 is for OMP and 3 is for CoSaMP.
+
 13. 'bp_verbosity'
+Verbosity for SPGL1 to ouput log or not. 0=quiet, 1=some output, 2=more output. Default is 1.
+
 14. 'bp_iterations'
+Max number of iterations SPGL1 is allowed. Default is 1e07 which is large enough to find a solution in most cases. Usually the SPGL1 will converge in 1000 to 3000 steps.
+
 15. 'bp_nPrevVals'
+Number previous func values for linesearch in SPGL1. Default is 3.
+
 16. 'bp_bpTol'
+Tolerance for basis pursuit solution in SPGL1. Default is 1e-6 and is accurate enough in most cases.
+
 17. 'bp_optTol'
+Optimality tolerance in SPGL1. Default is 1e-4
+
 18. 'bp_decTol'
+Required relative change in primal objective. Used for Newton methods in SPGL1. Default is 1e-4.
+
 19. 'bp_stepMin'
+Minimum spectral step in SPGL1. Default is 1e-6.
+
 20. 'bp_stepMax'
+Maximum spectral step in SPGL1. Default is 1e5.
+
 21. 'bp_subspaceMin'
+0=no subspace minimization, 1=subspace minimization. Default is 0.
+
 22. 'OMP_residual'
+The residual value on which the OMP algorithm will stop. Default is 1e-6.
+
 23. 'CoSaMP_estimate_sparsity'
+The estimated sparsity of input signal for CoSaMP. Since matching pursuit is a greedy search algorithm, usually a higher value than you really want to recover is recommended. For example, as default binFFT is [3 51], default 'CoSaMP_estimate_sparsity' is 5 (the actual value should be 2 instead).
+
 ##Results and Discussion
