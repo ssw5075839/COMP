@@ -37,9 +37,9 @@ In this matlab demo of compressed sensing sigma delta ADC, we will implment a on
 
 To run the code, first define a MATLAB structure opts. (This step is optional. If you don't define opts, the code will use all the default settings.)
 
-To define a struct, use command **opts = struct('field1',value1,...,'fieldN',valueN)**. Each option comes with a ('field', value) pair. The available filed name and suggested value will be discussed in the next section. If you don't define some name field, the default setting of that option will be used.
+To define a struct, use command ```opts = struct('field1',value1,...,'fieldN',valueN)```. Each option comes with a ('field', value) pair. The available filed name and suggested value will be discussed in the next section. If you don't define some name field, the default setting of that option will be used.
 
-Then run the function with command **SD_COMP_DEMO(opts)** (or simply **SD_COMP_DEMO(struct())**l if you prefer to use default settings). The demo will output the reconstruction algorithm running status in the console and the oupt three graphs to compare the original signal agains reconstructed signal in detail, both in time domain and frequency domain.
+Then run the function with command ```SD_COMP_DEMO(opts)``` (or simply ```SD_COMP_DEMO(struct())``` if you prefer to use default settings). The demo will output the reconstruction algorithm running status in the console and the oupt three graphs to compare the original signal agains reconstructed signal in detail, both in time domain and frequency domain.
 
 ##Explanation of Parameters in Program
 The available option fields and its suggested values are:
@@ -105,15 +105,15 @@ The available option fields and its suggested values are:
 <br />0=no subspace minimization, 1=subspace minimization. Default is 0.
 
 22. 'OMP_residual'
-<br />The residual value on which the OMP algorithm will stop. Default is 1e-6.
+<br />The residual value on which the OMP algorithm will stop. Default is 1e-6. Since OMP is a pure greedy search algorithm, when number of entries in binFFT is too high, OMP may not work.
 
 23. 'CoSaMP_estimate_sparsity'
-<br />The estimated sparsity of input signal for CoSaMP. Since matching pursuit is a greedy search algorithm, usually a higher value than you really want to recover is recommended. For example, as default binFFT is [3 51], default 'CoSaMP_estimate_sparsity' is 5 (the actual value should be 2 instead).
+<br />The estimated sparsity of input signal for CoSaMP. Since the convergence criteria is inverse proportional to the sparsity, usually a higher value than you really want to recover is recommended. For example, as default binFFT is [3 51], default 'CoSaMP_estimate_sparsity' is 5 (the actual value should be 2 instead).
 
 ##Results and Discussion
 Next we will discuss the results on default settings. In default settings, PATHS is 15, DATA_LENGTH is 256 and binFFT is [3 51]. Note that due to random nature of PHI and recovery algorithm, you may not repeat the exact same results. However, when algorithm cannot fully recover all the signals, do not just give up. Try to run once more and you may see different results!
 
-After running command SD_COMP_DEMO(struct()) (running demo with default settings), three graphs will be generated.<p align="center"><img src="https://github.com/ssw5075839/COMP/blob/master/pics/Figure_1.png"></p>
+After running command ```SD_COMP_DEMO(struct())``` (running demo with default settings), three graphs will be generated.<p align="center"><img src="https://github.com/ssw5075839/COMP/blob/master/pics/Figure_1.png"></p>
 
 Figure 1 shows the FFT graph of the original signal in dB20 scale. Here, frequency 3 and 51 are shown where other small values are simply quantization noise (we call them noise floor).
 
@@ -131,8 +131,20 @@ The lower subplot of figure 3 shows the time domain graph of difference between 
 
 In conclusion, we recovered a signal of lenght of 256, which is a superposition of sine wave of frequency 3 and 51, with 15 paths of ADC. By transmitting only this 15 paths' accumulated output, we are able to recover the input signal of sparsity of 2. The compression ration is around 15/256=5.86%! That is amazing!
 
-You may think since m is only equal to 2 in this example and the next question is is it really capable of reconstructing more sparse signals? Well, I tried with PATHS=45, DATA_LENGTH=1024, binFFT=[3 51 109 211 379 483] and using SPGL1. Guess what? Sucess! That concludes our discussion of compressed sensing sigma delta ADC.
+You may think since m is only equal to 2 in this example and the next question is is it really capable of reconstructing more sparse signals? Well, I tried with PATHS=45, DATA_LENGTH=1024, binFFT=[3 51 109 211 379 483]. 
+
+In this reconstruction problem, I find that SPGL1 is working well with option ```opts=struct('PATHS',60,'DATA_LENGTH',1024,'amp',[0.8,0.6,0.5,0.6,0.6,0.6],'binFFT',[3,51,109,211,379,483],'alg_choice',1,'verbosity',1)```
+
+OMP is working well with option ```opts=struct('PATHS',60,'DATA_LENGTH',1024,'amp',[0.8,0.6,0.5,0.6,0.6,0.6],'binFFT',[3,51,109,211,379,483],'alg_choice',2)```
+
+CoSaMP at heart is a greedy search algorithm but it incorporates ideas from the combinatorial algorithms. Therefore it is working well with option ```opts=struct('PATHS',60,'DATA_LENGTH',1024,'amp',[0.8,0.6,0.5,0.6,0.6,0.6],'binFFT',[3,51,109,211,379,483],'alg_choice',2,'CoSaMP_estimate_sparsity',15)```
+
+With either of the three algorithm, reconstruction should be sucessful and this is what I get:
 
 <p align="center"><img src="https://github.com/ssw5075839/COMP/blob/master/pics/Figure_1_1.png"></p>
+
 <p align="center"><img src="https://github.com/ssw5075839/COMP/blob/master/pics/Figure_2_1.png"></p>
+
 <p align="center"><img src="https://github.com/ssw5075839/COMP/blob/master/pics/Figure_3_1.png"></p>
+
+That concludes our discussion of compressed sensing sigma delta ADC.
