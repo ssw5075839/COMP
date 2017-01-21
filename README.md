@@ -35,9 +35,9 @@ In the real world, most nature signal is not sparse in time domain. However, the
 ##Code Running Instruction
 In this matlab demo of compressed sensing sigma delta ADC, we will implment a one-bit first order sigma delta ADC behaviour model together with compressed sensing. Then we will feed ADC outputs in one of the SPGL1, OMP or CoSaMP to try to reconstruct sparse signal. If the signal is sparse enough in frequency domain and ADC path number is large enough, then all the algorithm should be able to reconstruct the original signal.
 
-To run the code, first define a MATLAB structure opts. (This step is optional. If you don't define opts, the code will use all the default settings.)
+Please change direcotry to COMP/codes and start MATLAB from there (optionally you can add this directory to your MATLAB path). Run spgsetup.m and then we can start to run demo.
 
-To define a struct, use command ```opts = struct('field1',value1,...,'fieldN',valueN)```. Each option comes with a ('field', value) pair. The available filed name and suggested value will be discussed in the next section. If you don't define some name field, the default setting of that option will be used.
+To run the code, first define a MATLAB structure opts. (This step is optional. If you don't define opts, the code will use all the default settings.) To define a struct, use command ```opts = struct('field1',value1,...,'fieldN',valueN)```. Each option comes with a ('field', value) pair. The available filed name and suggested value will be discussed in the next section. If you don't define some name field, the default setting of that option will be used.
 
 Then run the function with command ```SD_COMP_DEMO(opts)``` (or simply ```SD_COMP_DEMO(struct())``` if you prefer to use default settings). The demo will output the reconstruction algorithm running status in the console and the oupt three graphs to compare the original signal agains reconstructed signal in detail, both in time domain and frequency domain.
 
