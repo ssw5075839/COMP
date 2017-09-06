@@ -1,7 +1,7 @@
-#Compressed-Sensing Sigma Delta ADC with SPG, OMP and CoSaMP
+# Compressed-Sensing Sigma Delta ADC with SPG, OMP and CoSaMP
 This is a MATLAB simulation program for compressed-sensing sigma-delta analog to digital converter (ADC).
 
-##Introduction to Basis Pursuit Denoising
+## Introduction to Basis Pursuit Denoising
 
 The idea of compressed-sensing comes from [basis pursuit denoising (BPDN)](https://en.wikipedia.org/wiki/Basis_pursuit_denoising) problem in machine learning. Basically, this problem has three equivalent forms:
 
