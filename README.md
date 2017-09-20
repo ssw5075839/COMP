@@ -1,4 +1,4 @@
-#Compressed-Sensing Sigma Delta ADC with SPG, OMP and CoSaMP
+# Compressed-Sensing Sigma Delta ADC with SPG, OMP and CoSaMP
 This is a MATLAB simulation program for compressed-sensing sigma-delta analog to digital converter (ADC). For compressed sensing theory, please refer to my file [Theoretical_Background.pdf](https://github.com/ssw5075839/COMP/blob/master/Theoretical_Background.pdf). In this Readme file, I will only briefly introduce the concepts and then give the code running instruction.
 
 ## Compressed Sensing in Sigma Delta Analog to Digital Converter (ADC)
