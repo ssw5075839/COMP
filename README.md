@@ -1,7 +1,7 @@
 #Compressed-Sensing Sigma Delta ADC with SPG, OMP and CoSaMP
-This is a MATLAB simulation program for compressed-sensing sigma-delta analog to digital converter (ADC). For compressed sensing theory, please refer to my file [Theoretical_Background.md](https://github.com/ssw5075839/COMP/blob/master/Theoretical_Background.md). In this Readme file, I will only briefly introduce the concepts and then give the code running instruction.
+This is a MATLAB simulation program for compressed-sensing sigma-delta analog to digital converter (ADC). For compressed sensing theory, please refer to my file [Theoretical_Background.pdf](https://github.com/ssw5075839/COMP/blob/master/Theoretical_Background.pdf). In this Readme file, I will only briefly introduce the concepts and then give the code running instruction.
 
-##Compressed Sensing in Sigma Delta Analog to Digital Converter (ADC)
+## Compressed Sensing in Sigma Delta Analog to Digital Converter (ADC)
 We have covered all the mathematical fundamentals to understand compressed sensing. We know that when A obeys RIP, compressed sensing is feasible and the reconstruction algorithm is available either through BP or BPDN problem. Now, let us take a look on how to integrate this process into Sigma Delta ADC.
 
 The basic concepts of sigma delta ADC can be found in this book [Analog Integrated Circuit Design](https://www.amazon.com/Analog-Integrated-Circuit-Design-David/dp/0471144487/). Now let us analyze circuits model and explain how it works.
@@ -32,7 +32,7 @@ Note that this is exactly the basis pursuit denoising (BPDN) problem as we state
 
 In the real world, most nature signal is not sparse in time domain. However, they are sparse in frequency domain. For example, a pure sine wave <img src="http://latex.codecogs.com/svg.latex?X(t)%20=%20sin(2\pi%20f\cdot%20t)" border="0" align="center"/> is infinitely long in time domain, but is only a spike at f in frequency domain. To really compressed sensing the nature signal, the time domain signal will be multiplied by an [FFT matrix](https://en.wikipedia.org/wiki/Fast_Fourier_transform) to convert to frequency domain. Then the frequency-sparse signal will be compressed and reconstructed. Finally, multiply the reconstruction with the inverse of FFT matrix to get the original signal in time domain. Sigma Delta ADC naturally did the FFT conversion and we only need to do the inverse FFT conversion in MATLAB.
 
-##Code Running Instruction
+## Code Running Instruction
 In this matlab demo of compressed sensing sigma delta ADC, we will implment a one-bit first order sigma delta ADC behaviour model together with compressed sensing. Then we will feed ADC outputs in one of the SPGL1, OMP or CoSaMP to try to reconstruct sparse signal. If the signal is sparse enough in frequency domain and ADC path number is large enough, then all the algorithm should be able to reconstruct the original signal.
 
 Please change direcotry to COMP/codes and start MATLAB from there (optionally you can add this directory to your MATLAB path). Run spgsetup.m and then we can start to run demo.
@@ -41,7 +41,7 @@ To run the code, first define a MATLAB structure opts. (This step is optional. I
 
 Then run the function with command ```SD_COMP_DEMO(opts)``` (or simply ```SD_COMP_DEMO(struct())``` if you prefer to use default settings). The demo will output the reconstruction algorithm running status in the console and the oupt three graphs to compare the original signal agains reconstructed signal in detail, both in time domain and frequency domain.
 
-##Explanation of Parameters in Program
+## Explanation of Parameters in Program
 The available option fields and its suggested values are:
 
 1. 'PATHS'
@@ -110,7 +110,7 @@ The available option fields and its suggested values are:
 23. 'CoSaMP_estimate_sparsity'
 <br />The estimated sparsity of input signal for CoSaMP. Since the convergence criteria is inverse proportional to the sparsity, usually a higher value than you really want to recover is recommended. For example, as default binFFT is [3 51], default 'CoSaMP_estimate_sparsity' is 5 (the actual value should be 2 instead).
 
-##Results and Discussion
+## Results and Discussion
 Next we will discuss the results on default settings. In default settings, PATHS is 15, DATA_LENGTH is 256 and binFFT is [3 51]. Note that due to random nature of PHI and recovery algorithm, you may not repeat the exact same results. However, when algorithm cannot fully recover all the signals, do not just give up. Try to run once more and you may see different results!
 
 After running command ```SD_COMP_DEMO(struct())``` (running demo with default settings), three graphs will be generated.<p align="center"><img src="https://github.com/ssw5075839/COMP/blob/master/pics/Figure_1.png"></p>
@@ -137,7 +137,7 @@ In this reconstruction problem, I find that SPGL1 is working well with option ``
 
 OMP is working well with option ```opts=struct('PATHS',60,'DATA_LENGTH',1024,'amp',[0.8,0.6,0.5,0.6,0.6,0.6],'binFFT',[3,51,109,211,379,483],'alg_choice',2)```
 
-CoSaMP at heart is a greedy search algorithm but it incorporates ideas from the combinatorial algorithms. Therefore it is working well with option ```opts=struct('PATHS',60,'DATA_LENGTH',1024,'amp',[0.8,0.6,0.5,0.6,0.6,0.6],'binFFT',[3,51,109,211,379,483],'alg_choice',2,'CoSaMP_estimate_sparsity',15)```
+CoSaMP at heart is a greedy search algorithm but it incorporates ideas from the combinational algorithms. Therefore it is working well with option ```opts=struct('PATHS',60,'DATA_LENGTH',1024,'amp',[0.8,0.6,0.5,0.6,0.6,0.6],'binFFT',[3,51,109,211,379,483],'alg_choice',2,'CoSaMP_estimate_sparsity',15)```
 
 With either of the three algorithm, reconstruction should be sucessful and this is what I get:
 
@@ -147,4 +147,4 @@ With either of the three algorithm, reconstruction should be sucessful and this 
 
 <p align="center"><img src="https://github.com/ssw5075839/COMP/blob/master/pics/Figure_3_1.png"></p>
 
-That concludes our discussion of compressed sensing sigma delta ADC.
+This concludes our discussion of compressed sensing sigma delta ADC.
